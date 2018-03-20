@@ -4,16 +4,15 @@ import java.util.ArrayList;
 
 public class Child extends Profile {
 	
-	private ArrayList<Profile> friends;
 	private ArrayList<Profile> parents;
 
 	public Child(String name, int age, String status) {
+		super(name, age, status);		
 		// TODO Auto-generated constructor stub
-		super(name, age, status);
-		friends = new ArrayList<Profile>();
+
 		parents = new ArrayList<Profile>(2);
 	}
-	
+
 	public ArrayList<Profile> getParents() {
 		return parents;
 	}

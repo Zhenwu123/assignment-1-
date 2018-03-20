@@ -3,6 +3,7 @@ package utlility;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import data.MiniNetData;
 import entity.Connection;
 import entity.Profile;
 
@@ -35,25 +36,31 @@ public class IOUtility
         {
             try
             {
-                System.out.print("Please enter an integer");
                 i = Integer.parseInt(in.nextLine());
                 break;
             }
             catch(Exception e)
             {
-                System.out.println("Not a valid Integer");
+                System.err.print("Not an Integer! Enter an option: ");
             }
         }
         return i;  
     }
     
     public static ArrayList<Profile> readProfiles(){
-    	return new ArrayList<Profile>();
+    	return MiniNetData.createProfile();
     }
     
     public static ArrayList<Connection> readConnections(){
-    	return new ArrayList<Connection>();
+    	return MiniNetData.createConnection();
     }
-}// end of class
+    
+    public static void printArrayList(ArrayList<Profile> profileList){
+		for(Profile profile : profileList){
+			System.out.print(profile.getName() + " ");
+		}
+		System.out.println("\n");
+	}
+}
 
 

@@ -10,11 +10,15 @@ public abstract class Profile {
 	private Image image;
 	private String status;
 	
+	private ArrayList<Profile> friends;
+	
 	public Profile(String name, int age, String status) {
 		// TODO Auto-generated constructor stub
 		setName(name);
 		setAge(age);
 		setStatus(status);
+		
+		friends = new ArrayList<Profile>();
 	}
 	
 	public abstract void print2Screen();
@@ -50,4 +54,13 @@ public abstract class Profile {
 	public void setStatus(String status) {
 		this.status = status;
 	}
+
+	public ArrayList<Profile> getFriends() {
+		return friends;
+	}
+
+	public void setFriends(ArrayList<Profile> friends) {
+		this.friends = friends;
+	}
+	
 }

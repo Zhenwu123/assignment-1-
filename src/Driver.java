@@ -36,10 +36,10 @@ public class Driver {
 		while(flag){
 			switch (Driver.showMenu()) {
 			case 1:
-
+				manager.listAllProfils();
 				break;
 			case 2:
-
+				
 				break;
 			case 3:
 
@@ -55,9 +55,10 @@ public class Driver {
 				break;
 			case 7:
 				flag = false;
+				System.err.println("You have successfully exit!");
 				break;
 			default:
-				System.out.println("The input is invalid!");
+				System.err.println("The input is outside the range!\n");
 				break;
 			}
 		}
