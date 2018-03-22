@@ -37,12 +37,12 @@ public class MiniNetData {
 	
 	public static ArrayList<Connection> createConnection(){
 		ArrayList<Connection> connections = new ArrayList<Connection>();
-		connections.add(new Connection(lucas, ivy, "friend"));
-		connections.add(new Connection(emily, jack, "parents"));
-		connections.add(new Connection(emily, mia, "parents"));
-		connections.add(new Connection(alice, bob, "friend"));
-		connections.add(new Connection(alice, don, "friend"));
-		connections.add(new Connection(cathy, don, "friend"));
+		connections.add(new Connection(lucas, ivy, "friends"));
+		connections.add(new Connection(ivy, jack, "parents"));
+		connections.add(new Connection(ivy, mia, "parents"));
+		connections.add(new Connection(alice, bob, "friends"));
+		connections.add(new Connection(alice, don, "friends"));
+		connections.add(new Connection(cathy, don, "friends"));
 		return connections;
 	}
 }

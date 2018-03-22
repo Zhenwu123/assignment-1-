@@ -47,6 +47,25 @@ public class IOUtility
         return i;  
     }
     
+    public static Integer getInteger(String prompt)
+    {
+        Integer i = 0;
+        while(true)
+        {
+            try
+            {
+            	System.out.print(prompt + " ");
+            	i = Integer.parseInt(in.nextLine());
+                break;
+            }
+            catch(Exception e)
+            {
+                System.err.print("Not an Integer! Enter an option: ");
+            }
+        }
+        return i;  
+    }
+    
     public static ArrayList<Profile> readProfiles(){
     	return MiniNetData.createProfile();
     }

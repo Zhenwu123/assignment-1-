@@ -1,5 +1,6 @@
 import utlility.IOUtility;
 import entity.MiniNetManager;
+import entity.Profile;
 
 public class Driver {
 
@@ -10,7 +11,7 @@ public class Driver {
 		this.manager = manager;
 	}
 
-	public static int showMenu(){
+	public int showMenu(){
 		System.out.println("MiniNet Menu");
 		System.out.println("===================================");
 		System.out.println("1. List everyone");
@@ -24,34 +25,82 @@ public class Driver {
 		return IOUtility.getInteger();	
 	}
 
-	public static int showSubMenu3(){
+	public int showSubMenu3(){
 		System.out.println("1. Display the profile of the selected person");
 		System.out.println("2. Update the profile information of the selected person");
 		System.out.println("3. Delete the selected person");
 		System.out.println("4. Back to previous option");
+		System.out.print("Enter an option: ");
 		return IOUtility.getInteger();	
 	}
 
 	public void run(){
 		while(flag){
-			switch (Driver.showMenu()) {
+			switch (showMenu()) {
 			case 1:
 				manager.listAllProfils();
 				break;
 			case 2:
-				
+				manager.addProfile(receiveProfileInfo());
+				System.out.println("Profile is added!\n");
 				break;
 			case 3:
-
+				String name = IOUtility.getString("Please enter the name you want to select: ");
+				Profile profile = manager.getProfileFromName(name);
+				if(profile != null){
+					System.out.println("You have selected: " + name);
+					System.out.println("===================================");
+					switch (showSubMenu3()) {
+					case 1:
+						profile.print2Screen();
+						System.out.println();
+						break;
+					case 2: //untest
+						String name1 = IOUtility.getString("Please enter the new name: ");
+						Integer age1 = IOUtility.getInteger("Please enter the new age: ");
+						String status1 = IOUtility.getString("Please enter the new status: ");
+						manager.updateProfile(profile, name1, age1, status1);
+						System.out.println("Profile is updated!\n");
+						break;
+					case 3: //bug
+						manager.deleteProfile(profile);
+						System.out.println("Profile is deleted!\n"); 
+						break;
+					case 4:
+						break;
+					}
+				}else{
+					System.out.println(name + " is not in MiniNet!");
+				}
 				break;
 			case 4:
-
+				String name1 = IOUtility.getString("Please enter the first profile name: ");
+				Profile profile1 = manager.getProfileFromName(name1);
+				String name2 = IOUtility.getString("Please enter the second profile name: ");
+				Profile profile2 = manager.getProfileFromName(name2);
+				if(manager.isDirectFriends(profile1, profile2)){
+					System.out.println(name1 + " and " + name2 + " is direct friends!\n");
+				}else{
+					System.out.println(name1 + " and " + name2 + " is not direct friends!\n");
+				}
 				break;
 			case 5:
-
+				//constrain
+				String name3 = IOUtility.getString("Please enter the first profile name: ");
+				Profile profile3 = manager.getProfileFromName(name3);
+				String name4 = IOUtility.getString("Please enter the second profile name: ");
+				Profile profile4 = manager.getProfileFromName(name4);
+				String connection = IOUtility.getString("Please enter the connection (eg. friends, parents): ");
+				if(manager.canCreateConnection(profile3, profile4, connection)){
+					System.out.println("new connection "+ connection + " between " + name3 + " and " + name4 + " is created!\n");
+				}else{
+					System.out.println("new connection "+ connection + " between " + name3 + " and " + name4 + " cannot be created!\n");
+				}
 				break;
 			case 6:
-
+				String name5 =  IOUtility.getString("Please enter the profile name: ");
+				String connection1 = IOUtility.getString("Are you looking forward the name of child or the name of parents?");
+				manager.getParentsOrChild(name5, connection1);
 				break;
 			case 7:
 				flag = false;
@@ -64,6 +113,10 @@ public class Driver {
 		}
 	}
 
-
-
+	public Profile receiveProfileInfo(){
+		String name = IOUtility.getString("Please enter the name: ");
+		Integer age = IOUtility.getInteger("Please enter the age: ");
+		String status = IOUtility.getString("Please enter the status: ");
+		return manager.createProfile(name, age, status);
+	}
 }

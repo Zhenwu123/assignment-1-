@@ -66,14 +66,13 @@ public class MiniNetManager {
 	
 	public void updateProfile(Profile profile, String name, int age, String status){
 		profile.setName(name);
-		//not easy
 		profile.setAge(age);
 		profile.setStatus(status);
 	}
 	
 	public void deleteProfile(Profile profile){
-		for(Profile profile1 : profiles){
-			if(profile.equals(profile1)){
+		for(int i = profiles.size() - 1; i > 0; i--){
+			if(profiles.get(i).equals(profile)){
 				profiles.remove(profile);
 			}
 		}
@@ -81,19 +80,34 @@ public class MiniNetManager {
 		
 	}
 	
-	public void removeConnections(Profile profile){
+	public boolean isDirectFriends(Profile profile1, Profile profile2){
 		for(Connection connection : connections){
+			if(connection.getDirectRelationship(profile1, profile2) != null && 
+					connection.getDirectRelationship(profile1, profile2).equals("friends")){
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	public void removeConnections(Profile profile){
+		/*for(Connection connection : connections){
 			if(connection.containProfile(profile)){
 				connections.remove(connection);
 			}
-		}
+		}*/
 		updateRelationship();
 	}
 	
-	public void createConnection(Profile profile1, Profile profile2, String relationship){
+	public boolean canCreateConnection(Profile profile1, Profile profile2, String relationship){
 		//constrain
-		connections.add(new Connection(profile1, profile2, relationship));
-		updateRelationship();
+		if(true){
+			connections.add(new Connection(profile1, profile2, relationship));
+			updateRelationship();
+			return true;
+		}
+		return false;
+		
 	}
 	
 	public void getParentsOrChild(String name, String relationship){
