@@ -1,8 +1,12 @@
 package entity;
 
+import interf8ce.AddRelationship;
+
 import java.util.ArrayList;
 
-public class Child extends Profile {
+import sun.print.resources.serviceui;
+
+public class Child extends Profile implements AddRelationship{
 	
 	private ArrayList<Profile> parents;
 
@@ -22,8 +26,23 @@ public class Child extends Profile {
 	}
 
 	@Override
-	public void print2Screen() {
+	public String toString() {
 		// TODO Auto-generated method stub
-		
+		String result;
+		if(getParents().size() != 0){
+			result = "Parents: " + getParents().get(0).getName() + " and " + getParents().get(1).getName() + "\n";
+		}else{
+			result = "Parents:" + "\n";
+		}
+		return super.toString() + result;
 	}
+
+	@Override
+	public void addParents(Profile profile) {
+		// TODO Auto-generated method stub
+		if(!parents.contains(profile)){
+			parents.add(profile);
+		}
+	}
+
 }

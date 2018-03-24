@@ -9,8 +9,7 @@ import entity.Profile;
 
 public class MiniNetData {
 	
-	private static Child lucas, ivy;
-	private static Adult emily, alice, bob, cathy, don, jack, mia;
+	private static Profile lucas, ivy, emily, alice, bob, cathy, don, jack, mia;
 	
 	public static ArrayList<Profile> createProfile(){
 		ArrayList<Profile> profiles = new ArrayList<Profile>();
@@ -20,17 +19,17 @@ public class MiniNetData {
 		profiles.add(ivy);
 		emily = new Adult("Emily", 22, "Working in KFC");
 		profiles.add(emily);
-		alice = new Adult("Alice", 17, "Student at RMIT");
+		alice = new Adult("Alice", 14, "Student at RMIT");
 		profiles.add(alice);
-		bob = new Adult("Bob", 17, "Student at RMIT");
+		bob = new Adult("Bob", 14, "Student at RMIT");
 		profiles.add(bob);
-		cathy = new Adult("Cathy", 18, "Student at RMIT");
+		cathy = new Adult("Cathy", 13, "Student at RMIT");
 		profiles.add(cathy);
-		don = new Adult("Don", 18, "Student at RMIT");
+		don = new Adult("Don", 13, "Student at RMIT");
 		profiles.add(don);
-		jack = new Adult("Jack", 50, "Working in ChinaTown");
+		jack = new Adult("Jack", 45, "Working in ChinaTown");
 		profiles.add(jack);
-		mia = new Adult("Mia", 48, "Working as Accountant");
+		mia = new Adult("Mia", 42, "Working as Accountant");
 		profiles.add(mia);
 		return profiles;
 	}
@@ -38,11 +37,11 @@ public class MiniNetData {
 	public static ArrayList<Connection> createConnection(){
 		ArrayList<Connection> connections = new ArrayList<Connection>();
 		connections.add(new Connection(lucas, ivy, "friends"));
-		connections.add(new Connection(ivy, jack, "parents"));
-		connections.add(new Connection(ivy, mia, "parents"));
 		connections.add(new Connection(alice, bob, "friends"));
 		connections.add(new Connection(alice, don, "friends"));
 		connections.add(new Connection(cathy, don, "friends"));
+		connections.add(new Connection(ivy, jack, "parents"));
+		connections.add(new Connection(ivy, mia, "parents"));
 		return connections;
 	}
 }

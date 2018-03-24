@@ -37,10 +37,10 @@ public class Driver {
 	public void run(){
 		while(flag){
 			switch (showMenu()) {
-			case 1:
+			case 1://pass
 				manager.listAllProfils();
 				break;
-			case 2:
+			case 2: //pass
 				manager.addProfile(receiveProfileInfo());
 				System.out.println("Profile is added!\n");
 				break;
@@ -51,20 +51,18 @@ public class Driver {
 					System.out.println("You have selected: " + name);
 					System.out.println("===================================");
 					switch (showSubMenu3()) {
-					case 1:
-						profile.print2Screen();
-						System.out.println();
+					case 1: //pass
+						System.out.println(profile.toString());
 						break;
-					case 2: //untest
-						String name1 = IOUtility.getString("Please enter the new name: ");
+					case 2: //pass
 						Integer age1 = IOUtility.getInteger("Please enter the new age: ");
 						String status1 = IOUtility.getString("Please enter the new status: ");
-						manager.updateProfile(profile, name1, age1, status1);
-						System.out.println("Profile is updated!\n");
+						manager.updateProfile(profile, name, age1, status1);
+						System.out.println(name +"'s profile is updated!\n");
 						break;
-					case 3: //bug
+					case 3: //pass
 						manager.deleteProfile(profile);
-						System.out.println("Profile is deleted!\n"); 
+						System.out.println(name +"'s profile is deleted!\n"); 
 						break;
 					case 4:
 						break;
@@ -73,7 +71,7 @@ public class Driver {
 					System.out.println(name + " is not in MiniNet!");
 				}
 				break;
-			case 4:
+			case 4://pass
 				String name1 = IOUtility.getString("Please enter the first profile name: ");
 				Profile profile1 = manager.getProfileFromName(name1);
 				String name2 = IOUtility.getString("Please enter the second profile name: ");
@@ -85,7 +83,7 @@ public class Driver {
 				}
 				break;
 			case 5:
-				//constrain
+				//pass
 				String name3 = IOUtility.getString("Please enter the first profile name: ");
 				Profile profile3 = manager.getProfileFromName(name3);
 				String name4 = IOUtility.getString("Please enter the second profile name: ");
@@ -97,12 +95,12 @@ public class Driver {
 					System.out.println("new connection "+ connection + " between " + name3 + " and " + name4 + " cannot be created!\n");
 				}
 				break;
-			case 6:
+			case 6://pass
 				String name5 =  IOUtility.getString("Please enter the profile name: ");
 				String connection1 = IOUtility.getString("Are you looking forward the name of child or the name of parents?");
 				manager.getParentsOrChild(name5, connection1);
 				break;
-			case 7:
+			case 7://pass
 				flag = false;
 				System.err.println("You have successfully exit!");
 				break;

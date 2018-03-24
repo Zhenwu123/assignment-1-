@@ -13,6 +13,7 @@ public class MiniNetManager {
 		// TODO Auto-generated constructor stub
 		this.profiles = profiles;
 		this.connections = connections;
+		updateConnection();
 	}
 
 	public ArrayList<Profile> getProfiles() {
@@ -31,9 +32,43 @@ public class MiniNetManager {
 		this.connections = connections;
 	}
 
-	public void updateRelationship(){
-		
+	public void updateConnection(){
+		buildDirectConnection();
+		buildIndirectConnection();
 	}
+	
+	public void clearConnection(){
+		for(Profile profile : profiles){
+			profile.getFriends().clear();
+		}
+	}
+	
+	public void buildDirectConnection(){
+		for(Profile profile : profiles){
+			for(Connection connection : connections){
+				if(connection.getRelationship().equals("friends")){
+					if(connection.containProfile(profile)){
+						profile.addFriends(connection.getAnotherProfile(profile));
+					}
+				}else if(connection.getRelationship().equals("parents")){
+					if(connection.getSourceProfile().equals(profile)){
+						((Child)profile).addParents(connection.getAnotherProfile(profile));
+					}
+				}				
+			}
+		}
+	}
+	
+	public void buildIndirectConnection(){
+		for(Profile profile : profiles){
+			ArrayList<Profile> newFriends = new ArrayList<Profile>();
+			for(Profile profile2 : profile.getFriends()){
+				newFriends.addAll(profile2.getFriends());
+			}
+			profile.combineFriends(newFriends);
+		}
+	}
+	
 	
 	public Profile createProfile(String name, int age, String status){
 		if(age >= 16){
@@ -71,19 +106,17 @@ public class MiniNetManager {
 	}
 	
 	public void deleteProfile(Profile profile){
-		for(int i = profiles.size() - 1; i > 0; i--){
+		for(int i = profiles.size() - 1; i >= 0; i--){
 			if(profiles.get(i).equals(profile)){
-				profiles.remove(profile);
+				profiles.remove(i);
 			}
 		}
 		removeConnections(profile);
-		
 	}
 	
 	public boolean isDirectFriends(Profile profile1, Profile profile2){
 		for(Connection connection : connections){
-			if(connection.getDirectRelationship(profile1, profile2) != null && 
-					connection.getDirectRelationship(profile1, profile2).equals("friends")){
+			if(connection.getDirectRelationship(profile1, profile2).equals("friends")){
 				return true;
 			}
 		}
@@ -91,20 +124,31 @@ public class MiniNetManager {
 	}
 	
 	public void removeConnections(Profile profile){
-		/*for(Connection connection : connections){
-			if(connection.containProfile(profile)){
-				connections.remove(connection);
+		for(int i = connections.size() - 1; i >= 0; i--){
+			if(connections.get(i).containProfile(profile)){
+				connections.remove(i);
 			}
-		}*/
-		updateRelationship();
+		}
+		clearConnection();
+		updateConnection();
 	}
 	
 	public boolean canCreateConnection(Profile profile1, Profile profile2, String relationship){
 		//constrain
-		if(true){
-			connections.add(new Connection(profile1, profile2, relationship));
-			updateRelationship();
-			return true;
+		if(relationship.equals("friends")){
+			if(profile1.getAge() <= 16 && profile2.getAge()<= 16 
+					&& profile1.getAge() >= 2 && profile2.getAge() >= 2 
+					&& Math.abs(profile1.getAge() - profile2.getAge()) <= 3){
+				connections.add(new Connection(profile1, profile2, relationship));
+				updateConnection();
+				return true;
+			}
+		}else if(relationship.equals("parents")){
+			if(profile1.getAge() <= 16){
+				connections.add(new Connection(profile1, profile2, relationship));
+				updateConnection();
+				return true;
+			}
 		}
 		return false;
 		
@@ -113,16 +157,21 @@ public class MiniNetManager {
 	public void getParentsOrChild(String name, String relationship){
 		Profile profile = getProfileFromName(name);
 		if(relationship.equals("parents")){
-			if(((Child)profile).getParents().size() != 0){
-				System.out.print("parents of " + name + "are: ");
-				IOUtility.printArrayList(((Child)profile).getParents());
+			System.out.print("parents of " + name + " are: ");
+			for(Connection connection : connections){
+				if(connection.getSourceProfile().equals(profile)){
+					System.out.print(connection.getTargetProfile().getName() + " ");
+				}
 			}
 		}else if(relationship.equals("child")){
-			if(((Adult)profile).getChild().size() != 0){
-				System.out.print("child of " + name + "is(are): ");
-				IOUtility.printArrayList(((Adult)profile).getChild());
+			System.out.print("child of " + name + " is(are): ");
+			for(Connection connection : connections){
+				if(connection.getTargetProfile().equals(profile)){
+					System.out.print(connection.getSourceProfile().getName());
+				}
 			}
 		}
+		System.out.println("\n");
 	}
 
 }

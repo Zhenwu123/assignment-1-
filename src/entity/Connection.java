@@ -20,6 +20,14 @@ public class Connection {
 		return false;
 	}
 	
+	public Profile getAnotherProfile(Profile profile){
+		if(sourceProfile.equals(profile)){
+			return targetProfile;
+		}else{
+			return sourceProfile;
+		}
+	}
+	
 	public boolean containBothProfile(Profile profile1, Profile profile2){
 		if((this.sourceProfile.equals(profile1) && this.targetProfile.equals(profile2)) || 
 				(this.sourceProfile.equals(profile2) && this.targetProfile.equals(profile1))){
