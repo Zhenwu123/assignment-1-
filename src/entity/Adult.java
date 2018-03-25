@@ -3,7 +3,7 @@ package entity;
  * This class is a sub-class of base-class Profile 
  * which is used to store Adult profile information.
  * 
- * @author  
+ * @author  Zhen Wu
  * @version 1.0
  */
 

@@ -6,9 +6,8 @@ import java.util.ArrayList;
  * This class is a base-class Profile which defines profile 
  * name, age, image and status, and each profile has a ArrayList
  * of Profile as friends.
-
  * 
- * @author  
+ * @author Zhen Wu 
  * @version 1.0
  */
 

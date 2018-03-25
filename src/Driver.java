@@ -5,7 +5,7 @@ import entity.Profile;
  * This class is a driver class which display a simple numbered menu system 
  * and enable command-line interaction with user.
  * 
- * @author  
+ * @author  Zhen Wu
  * @version 1.0
  */
 

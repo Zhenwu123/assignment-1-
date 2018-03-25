@@ -4,7 +4,7 @@ import entity.Profile;
 /**
  * This interface is for Profile's subclass Child to add parents to its member-variable.
  * 
- * @author S
+ * @author Zhen Wu
  * @version 1.0
  */
 

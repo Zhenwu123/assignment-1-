@@ -9,7 +9,7 @@ import java.util.ArrayList;
  * implements the AddRelationship interface to add Profile 
  * to its parents Profile ArrayList. 
  * 
- * @author  
+ * @author  Zhen Wu
  * @version 1.0
  */
 

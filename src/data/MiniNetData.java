@@ -10,7 +10,7 @@ import entity.Profile;
  * This class is a class which creates sample data for MiniNet including 
  * list of profiles and list of connections. 
  * 
- * @author  
+ * @author  Zhen Wu
  * @version 1.0
  */
 

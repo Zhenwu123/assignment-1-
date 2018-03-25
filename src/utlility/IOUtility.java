@@ -11,7 +11,7 @@ import entity.Profile;
  * This class is a utility class which defines methods to read different forms of user input, 
  * read data from outside class.
  * 
- * @author  
+ * @author  Zhen Wu
  * @version 1.0
  */
 
