@@ -1,4 +1,11 @@
 package entity;
+/**
+ * This class is a sub-class of base-class Profile 
+ * which is used to store Adult profile information.
+ * 
+ * @author  
+ * @version 1.0
+ */
 
 public class Adult extends Profile{
 	

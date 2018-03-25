@@ -7,6 +7,14 @@ import data.MiniNetData;
 import entity.Connection;
 import entity.Profile;
 
+/**
+ * This class is a utility class which defines methods to read different forms of user input, 
+ * read data from outside class.
+ * 
+ * @author  
+ * @version 1.0
+ */
+
 public class IOUtility
 {
     private static Scanner in = new Scanner(System.in);
@@ -47,6 +55,12 @@ public class IOUtility
         return i;  
     }
     
+    /** getInteger(String prompt) prompts the user for an input and
+     * parses the input to an Integer object.
+     * 
+     * @param   prompt  A String which promts for user input
+     * @return  Integer  An object which holds the user input
+     */
     public static Integer getInteger(String prompt)
     {
         Integer i = 0;
@@ -66,14 +80,29 @@ public class IOUtility
         return i;  
     }
     
+    /** readProfiles() reads sample profile data from MiniNetData class and 
+     * return as an array list Profile object.
+     * 
+     * @return  ArrayList<Profile>  An ArrayList object which holds the
+     *  sample Profile list
+     */
     public static ArrayList<Profile> readProfiles(){
     	return MiniNetData.createProfile();
     }
     
+    /** readConnections() reads sample connection data from MiniNetData class
+     * and return as an array list Connection object.
+     * 
+     * @return  ArrayList<Connection>  An ArrayList object which holds the
+     *  sample Connection list
+     */
     public static ArrayList<Connection> readConnections(){
     	return MiniNetData.createConnection();
     }
     
+    /** printArrayList() prints profile name from Profile list one by one.
+     *  
+     */
     public static void printArrayList(ArrayList<Profile> profileList){
 		for(Profile profile : profileList){
 			System.out.print(profile.getName() + " ");

@@ -6,6 +6,13 @@ import entity.Adult;
 import entity.Child;
 import entity.Connection;
 import entity.Profile;
+/**
+ * This class is a class which creates sample data for MiniNet including 
+ * list of profiles and list of connections. 
+ * 
+ * @author  
+ * @version 1.0
+ */
 
 public class MiniNetData {
 	

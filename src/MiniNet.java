@@ -4,7 +4,13 @@ import utlility.IOUtility;
 import entity.Connection;
 import entity.MiniNetManager;
 import entity.Profile;
-
+/**
+ * This class is a main startup class which read sample data and build up a MiniNet, 
+ * and then receive user input to manipulate the MiniNet. 
+ * 
+ * @author  
+ * @version 1.0
+ */
 
 public class MiniNet {
 

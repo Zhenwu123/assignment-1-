@@ -1,16 +1,35 @@
 import utlility.IOUtility;
 import entity.MiniNetManager;
 import entity.Profile;
+/**
+ * This class is a driver class which display a simple numbered menu system 
+ * and enable command-line interaction with user.
+ * 
+ * @author  
+ * @version 1.0
+ */
 
 public class Driver {
 
+    /** MiniNetManager manager is used to manipulate the profiles and connections.
+     * 
+     */
 	private MiniNetManager manager;
+	
+    /** boolean flag is used to stop the menu loop if user selects exit.
+     * 
+     */
 	private static boolean flag = true;
 
 	public Driver(MiniNetManager manager){
 		this.manager = manager;
 	}
 
+    /** showMenu() shows the main menu for interaction
+     * and receive user input as an integer.
+     * 
+     * @return  Integer  An Integer which holds the user selection
+     */
 	public int showMenu(){
 		System.out.println("MiniNet Menu");
 		System.out.println("===================================");
@@ -25,6 +44,11 @@ public class Driver {
 		return IOUtility.getInteger();	
 	}
 
+    /** showSubMenu3() shows the sub menu of the third of the main menu
+     *  for interaction and receive user input as an integer.
+     * 
+     * @return  Integer  An Integer which holds the user selection
+     */
 	public int showSubMenu3(){
 		System.out.println("1. Display the profile of the selected person");
 		System.out.println("2. Update the profile information of the selected person");
@@ -34,87 +58,99 @@ public class Driver {
 		return IOUtility.getInteger();	
 	}
 
+    /** run() is the main loop of showing the main menu and 
+     *  list all selections for user to select
+     *
+     */
 	public void run(){
 		while(flag){
 			switch (showMenu()) {
-			case 1://pass
+			//1. List everyone
+			case 1:
 				manager.listAllProfils();
 				break;
-			case 2: //pass
-				manager.addProfile(receiveProfileInfo());
+			//2. Add a person
+			case 2: 
+				String name2 = IOUtility.getString("Please enter the name: ");
+				Integer age = IOUtility.getInteger("Please enter the age: ");
+				String status = IOUtility.getString("Please enter the status: ");
+				Profile tempProfile = manager.createProfile(name2, age, status);
+				manager.addProfile(tempProfile);
 				System.out.println("Profile is added!\n");
 				break;
+			//3. Select a person
 			case 3:
-				String name = IOUtility.getString("Please enter the name you want to select: ");
-				Profile profile = manager.getProfileFromName(name);
+				String name3 = IOUtility.getString("Please enter the name you want to select: ");
+				Profile profile = manager.getProfileFromName(name3);
 				if(profile != null){
-					System.out.println("You have selected: " + name);
+					System.out.println("You have selected: " + name3);
 					System.out.println("===================================");
 					switch (showSubMenu3()) {
-					case 1: //pass
+					//3-1. Display the profile of the selected person
+					case 1: 
 						System.out.println(profile.toString());
 						break;
-					case 2: //pass
+					//3-2. Update the profile information of the selected person
+					case 2: 
 						Integer age1 = IOUtility.getInteger("Please enter the new age: ");
 						String status1 = IOUtility.getString("Please enter the new status: ");
-						manager.updateProfile(profile, name, age1, status1);
-						System.out.println(name +"'s profile is updated!\n");
+						manager.updateProfile(profile, name3, age1, status1);
+						System.out.println(name3 +"'s profile is updated!\n");
 						break;
-					case 3: //pass
+					//3-3. Delete the selected person
+					case 3: 
 						manager.deleteProfile(profile);
-						System.out.println(name +"'s profile is deleted!\n"); 
+						System.out.println(name3 +"'s profile is deleted!\n"); 
 						break;
+					//3-4. Continue
 					case 4:
 						break;
 					}
 				}else{
-					System.out.println(name + " is not in MiniNet!");
+					System.out.println(name3 + " is not in MiniNet!");
 				}
 				break;
-			case 4://pass
-				String name1 = IOUtility.getString("Please enter the first profile name: ");
-				Profile profile1 = manager.getProfileFromName(name1);
-				String name2 = IOUtility.getString("Please enter the second profile name: ");
-				Profile profile2 = manager.getProfileFromName(name2);
+			//4. Are these two direct friends?
+			case 4:
+				String name41 = IOUtility.getString("Please enter the first profile name: ");
+				Profile profile1 = manager.getProfileFromName(name41);
+				String name42 = IOUtility.getString("Please enter the second profile name: ");
+				Profile profile2 = manager.getProfileFromName(name42);
 				if(manager.isDirectFriends(profile1, profile2)){
-					System.out.println(name1 + " and " + name2 + " is direct friends!\n");
+					System.out.println(name41 + " and " + name42 + " is direct friends!\n");
 				}else{
-					System.out.println(name1 + " and " + name2 + " is not direct friends!\n");
+					System.out.println(name41 + " and " + name42 + " is not direct friends!\n");
 				}
 				break;
+			//5. Connect two persons in a meaningful way e.g. friend, parent"
 			case 5:
-				//pass
-				String name3 = IOUtility.getString("Please enter the first profile name: ");
-				Profile profile3 = manager.getProfileFromName(name3);
-				String name4 = IOUtility.getString("Please enter the second profile name: ");
-				Profile profile4 = manager.getProfileFromName(name4);
+				String name51 = IOUtility.getString("Please enter the first profile name: ");
+				Profile profile3 = manager.getProfileFromName(name51);
+				String name52 = IOUtility.getString("Please enter the second profile name: ");
+				Profile profile4 = manager.getProfileFromName(name52);
 				String connection = IOUtility.getString("Please enter the connection (eg. friends, parents): ");
 				if(manager.canCreateConnection(profile3, profile4, connection)){
-					System.out.println("new connection "+ connection + " between " + name3 + " and " + name4 + " is created!\n");
+					System.out.println("new connection "+ connection + " between " + name51 + " and " + name52 + " is created!\n");
 				}else{
-					System.out.println("new connection "+ connection + " between " + name3 + " and " + name4 + " cannot be created!\n");
+					System.out.println("new connection "+ connection + " between " + name51 + " and " + name52 + " cannot be created!\n");
 				}
 				break;
-			case 6://pass
-				String name5 =  IOUtility.getString("Please enter the profile name: ");
+			//6. Find out the name(s) of a person¡¯s child(ren) or the names of the parents
+			case 6:
+				String name6 =  IOUtility.getString("Please enter the profile name: ");
 				String connection1 = IOUtility.getString("Are you looking forward the name of child or the name of parents?");
-				manager.getParentsOrChild(name5, connection1);
+				manager.getParentsOrChild(name6, connection1);
 				break;
-			case 7://pass
+			//7. Exit?
+			case 7:
 				flag = false;
 				System.err.println("You have successfully exit!");
 				break;
+			// Remind user the input is out of range.
 			default:
 				System.err.println("The input is outside the range!\n");
 				break;
 			}
 		}
-	}
-
-	public Profile receiveProfileInfo(){
-		String name = IOUtility.getString("Please enter the name: ");
-		Integer age = IOUtility.getInteger("Please enter the age: ");
-		String status = IOUtility.getString("Please enter the status: ");
-		return manager.createProfile(name, age, status);
 	}
 }
