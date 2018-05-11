@@ -36,7 +36,7 @@ public class Driver {
 		System.out.println("1. List everyone");
 		System.out.println("2. Add a person");
 		System.out.println("3. Select a person");
-		System.out.println("4. Are these two direct friends?");
+		System.out.println("4. Are these two directly connected?");
 		System.out.println("5. Connect two persons in a meaningful way e.g. friend, parent");
 		System.out.println("6. Find out the name(s) of a person¡¯s child(ren) or the names of the parents");
 		System.out.println("7. Exit?\n");
@@ -110,14 +110,15 @@ public class Driver {
 					System.out.println(name3 + " is not in MiniNet!");
 				}
 				break;
-			//4. Are these two direct friends?
+			//4. Are these two directly connected?
 			case 4:
 				String name41 = IOUtility.getString("Please enter the first profile name: ");
 				Profile profile1 = manager.getProfileFromName(name41);
 				String name42 = IOUtility.getString("Please enter the second profile name: ");
 				Profile profile2 = manager.getProfileFromName(name42);
-				if(manager.isDirectFriends(profile1, profile2)){
-					System.out.println(name41 + " and " + name42 + " is direct friends!\n");
+				String relation = manager.getDirectlyConnection(profile1, profile2);
+				if(!relation.equals("")){
+					System.out.println("the relationship between" + name41 + " and " + name42 + " is " + relation + "!\n");
 				}else{
 					System.out.println(name41 + " and " + name42 + " is not direct friends!\n");
 				}

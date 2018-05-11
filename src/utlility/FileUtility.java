@@ -1,0 +1,148 @@
+package utlility;
+
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
+
+import entity.Adult;
+import entity.Child;
+import entity.Connection;
+import entity.Profile;
+
+public class FileUtility {
+
+
+	/**
+	 * Reads data from file returning the lines as a list, or null if error
+	 * 
+	 * @param String fileName the file name
+	 * @return ArrayList<String>
+	 */
+	public static ArrayList<String> readFromFile(String fileName)
+    {
+    	ArrayList<String> contentList = new ArrayList<String>();
+    	BufferedReader br;
+		try 
+		{
+			br = new BufferedReader(new FileReader(fileName));
+	        String lineString;
+	        while((lineString = br.readLine()) != null) 
+	        {
+	        	if (lineString.startsWith("//") || lineString.isEmpty())
+	        	{
+	        		continue;
+	            }
+	        	contentList.add(lineString.trim());//delete the spaces
+	        }
+	        br.close();
+	        return contentList;
+		} 
+		catch (FileNotFoundException e)//if file not found
+		{
+			System.out.println("The file was not found.");
+		} 
+		catch (IOException e)
+		{
+			e.printStackTrace();
+		}
+		return null;
+    }
+	
+	/**
+	 * A method to build ArrayList of 
+	 * 
+	 * @param String fileName
+	 * @return ArrayList<>
+	 */
+	public static ArrayList<Profile> buildProfileListFromFile(String fileName)
+	{
+		if(readFromFile(fileName) != null)
+		{
+			return buildProfileListFromStringList(readFromFile(fileName));
+		}
+		else
+		{
+			return null;
+		}
+	}
+	
+	/**
+	 * A method to build ArrayList of 
+	 * 
+	 * @param String fileName
+	 * @return ArrayList<>
+	 */
+	public static ArrayList<Connection> buildConnectionListFromFile(String fileName, ArrayList<Profile> profiles)
+	{
+		if(readFromFile(fileName) != null)
+		{
+			return buildConnectionListFromStringList(readFromFile(fileName), profiles);
+		}
+		else
+		{
+			return null;
+		}
+	}
+	
+	
+	/**
+	 * A method to build the  list from String list which is read from file
+	 * 
+	 * @param ArrayList<String> contentList
+	 * @return ArrayList<>
+	 */
+	public static ArrayList<Profile> buildProfileListFromStringList(ArrayList<String> contentList) 
+	{
+		ArrayList<Profile> profileList = new ArrayList<Profile>();
+		for (String content : contentList)
+		{
+			String name = content.split(",")[0].trim();
+			String img = content.split(",")[1].trim();
+			String status = content.split(",")[2].trim();
+			String gender = content.split(",")[3].trim();
+			int age = Integer.parseInt(content.split(",")[4].trim());
+			String state = content.split(",")[5].trim();
+			if(age < 16) {
+				Profile newprofile = new Child(name, age, status);
+				profileList.add(newprofile);
+			}else {
+				Profile newprofile = new Adult(name, age, status);
+				profileList.add(newprofile);
+			}
+		}
+		return profileList;
+	}
+
+	/**
+	 * A method to build the  list from String list which is read from file
+	 * 
+	 * @param ArrayList<String> contentList
+	 * @return ArrayList<>
+	 */
+	public static ArrayList<Connection> buildConnectionListFromStringList(ArrayList<String> contentList, ArrayList<Profile> profiles) 
+	{
+		ArrayList<Connection> connectionList = new ArrayList<Connection>();
+		for (String content : contentList) 
+		{
+			String sourceProfile = content.split(",")[0].trim();
+			String targetProfile = content.split(",")[1].trim();
+			String relationship = content.split(",")[2].trim();
+			Profile source = getProfileFromName(sourceProfile, profiles);
+			Profile target = getProfileFromName(targetProfile, profiles);
+			Connection newConnection = new Connection(source, target, relationship);
+			connectionList.add(newConnection);
+		}
+		return connectionList;
+	}
+	
+	public static Profile getProfileFromName(String name, ArrayList<Profile> profiles){
+		for(Profile profile : profiles){
+			if(name.equals(profile.getName())){
+				return profile;
+			}
+		}
+		return null;
+	}
+}

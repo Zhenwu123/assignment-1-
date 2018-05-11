@@ -64,5 +64,9 @@ public class Child extends Profile implements AddRelationship{
 			parents.add(profile);
 		}
 	}
+	
+	public void printParents() {
+		System.out.print(parents.get(0).getName() + " and " + parents.get(1).getName());
+	}
 
 }

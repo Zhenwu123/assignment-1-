@@ -59,9 +59,11 @@ public class MiniNetManager {
 					if(connection.containProfile(profile)){
 						profile.addFriends(connection.getAnotherProfile(profile));
 					}
-				}else if(connection.getRelationship().equals("parents")){
-					if(connection.getSourceProfile().equals(profile)){
-						((Child)profile).addParents(connection.getAnotherProfile(profile));
+				}else if(connection.getRelationship().equals("parent")){
+					if(connection.getSourceProfile() instanceof Child) {
+						((Child)connection.getSourceProfile()).addParents(connection.getTargetProfile());
+					}else {
+						((Child)connection.getTargetProfile()).addParents(connection.getSourceProfile());
 					}
 				}				
 			}
@@ -174,20 +176,14 @@ public class MiniNetManager {
 		removeConnections(profile);
 	}
 	
-	/** isDirectFriends(Profile profile1, Profile profile2) returns
-	 *  true if profile1 and profile2 are direct friends.
-	 * 
-	 * @param  profile1  A Profile 
-	 * @param  profile2  A Profile
-	 * @return boolean   return true if profile1 and profile2 are direct friends.
-	 */
-	public boolean isDirectFriends(Profile profile1, Profile profile2){
+
+	public String getDirectlyConnection(Profile profile1, Profile profile2){
 		for(Connection connection : connections){
-			if(connection.getDirectRelationship(profile1, profile2).equals("friends")){
-				return true;
+			if(connection.containBothProfile(profile1, profile2)){
+				return connection.getDirectRelationship(profile1, profile2);
 			}
 		}
-		return false;
+		return "";
 	}
 	
 	/** removeConnections(Profile profile) remove connections 
@@ -245,20 +241,26 @@ public class MiniNetManager {
 		Profile profile = getProfileFromName(name);
 		if(relationship.equals("parents")){
 			System.out.print("parents of " + name + " are: ");
-			for(Connection connection : connections){
-				if(connection.getSourceProfile().equals(profile)){
-					System.out.print(connection.getTargetProfile().getName() + " ");
-				}
-			}
+			((Child)profile).printParents();
 		}else if(relationship.equals("child")){
-			System.out.print("child of " + name + " is(are): ");
+			if(profile instanceof Child) {
+				System.out.print(name + "has no children");
+				return;
+			}
 			for(Connection connection : connections){
-				if(connection.getTargetProfile().equals(profile)){
-					System.out.print(connection.getSourceProfile().getName());
+				if(connection.getRelationship().equals("parent")) {
+					System.out.print("child of " + name + " is: ");
+					if(connection.getSourceProfile().equals(profile)) {
+						System.out.println(connection.getTargetProfile().getName() + "\n");
+						return;
+					}else {
+						System.out.println(connection.getSourceProfile().getName() + "\n");
+						return;
+					}
 				}
 			}
 		}
-		System.out.println("\n");
+
 	}
 
 }
