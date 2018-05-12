@@ -2,6 +2,8 @@ package entity;
 
 import java.util.ArrayList;
 
+import javax.net.ssl.SSLEngine;
+
 import utlility.IOUtility;
 /**
  * This class is to manipulate the profiles and connections
@@ -237,30 +239,30 @@ public class MiniNetManager {
 	 * @param  name          A String which represents the profile name
 	 * @param  relationship  A String which represents the connection
 	 */
-	public void getParentsOrChild(String name, String relationship){
+	public String getParentsOrChild(String name, String relationship){
 		Profile profile = getProfileFromName(name);
 		if(relationship.equals("parents")){
-			System.out.print("parents of " + name + " are: ");
-			((Child)profile).printParents();
+			if(profile instanceof Adult) {
+				return name + "has no parents";
+			}
+			return "parents of " + name + " are: " + ((Child)profile).printParents();
 		}else if(relationship.equals("child")){
 			if(profile instanceof Child) {
-				System.out.print(name + "has no children");
-				return;
+				return name + "has no children";
 			}
 			for(Connection connection : connections){
 				if(connection.getRelationship().equals("parent")) {
-					System.out.print("child of " + name + " is: ");
-					if(connection.getSourceProfile().equals(profile)) {
-						System.out.println(connection.getTargetProfile().getName() + "\n");
-						return;
-					}else {
-						System.out.println(connection.getSourceProfile().getName() + "\n");
-						return;
+					if(connection.containProfile(profile)) {
+						if(connection.getSourceProfile().equals(profile)) {
+							return "child of " + name + " is: " + connection.getTargetProfile().getName();
+						}else {
+							return "child of " + name + " is: " + connection.getSourceProfile().getName();
+						}
 					}
 				}
 			}
 		}
-
+		return name + "has no children";
 	}
 
 }

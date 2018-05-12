@@ -18,10 +18,12 @@ public class MiniNet {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		//ArrayList<Profile> profiles = IOUtility.readProfiles();
-		ArrayList<Profile> profiles = FileUtility.buildProfileListFromFile("people.txt");
-		ArrayList<Connection> connections = FileUtility.buildConnectionListFromFile("relations.txt", profiles);
+		ArrayList<Profile> profiles = FileUtility.buildProfileListFromFile("file/people.txt");
+		ArrayList<Connection> connections = FileUtility.buildConnectionListFromFile("file/relations.txt", profiles);
 		MiniNetManager manager = new MiniNetManager(profiles, connections);
-		Driver driver = new Driver(manager);
-		driver.run();
+		//Driver driver = new Driver(manager);
+		//driver.run();
+
+		GUI gui = new GUI(manager);
 	}
 }

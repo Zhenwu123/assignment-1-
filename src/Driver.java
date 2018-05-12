@@ -140,7 +140,7 @@ public class Driver {
 			case 6:
 				String name6 =  IOUtility.getString("Please enter the profile name: ");
 				String connection1 = IOUtility.getString("Are you looking forward the name of child or the name of parents?");
-				manager.getParentsOrChild(name6, connection1);
+				System.out.println(manager.getParentsOrChild(name6, connection1));
 				break;
 			//7. Exit?
 			case 7:
