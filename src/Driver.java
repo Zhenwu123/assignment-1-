@@ -1,6 +1,7 @@
 import utlility.IOUtility;
 import entity.MiniNetManager;
 import entity.Profile;
+import exception.NoParentException;
 /**
  * This class is a driver class which display a simple numbered menu system 
  * and enable command-line interaction with user.
@@ -60,9 +61,10 @@ public class Driver {
 
     /** run() is the main loop of showing the main menu and 
      *  list all selections for user to select
+     * @throws NoParentException 
      *
      */
-	public void run(){
+	public void run() throws NoParentException{
 		while(flag){
 			switch (showMenu()) {
 			//1. List everyone
@@ -130,11 +132,11 @@ public class Driver {
 				String name52 = IOUtility.getString("Please enter the second profile name: ");
 				Profile profile4 = manager.getProfileFromName(name52);
 				String connection = IOUtility.getString("Please enter the connection (eg. friends, parents): ");
-				if(manager.canCreateConnection(profile3, profile4, connection)){
+				/*if(manager.canCreateConnection(profile3, profile4, connection)){
 					System.out.println("new connection "+ connection + " between " + name51 + " and " + name52 + " is created!\n");
 				}else{
 					System.out.println("new connection "+ connection + " between " + name51 + " and " + name52 + " cannot be created!\n");
-				}
+				}*/
 				break;
 			//6. Find out the name(s) of a person¡¯s child(ren) or the names of the parents
 			case 6:

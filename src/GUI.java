@@ -3,10 +3,13 @@ import java.awt.ComponentOrientation;
 import java.awt.Container;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
+import java.awt.HeadlessException;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -19,12 +22,24 @@ import javax.swing.SwingConstants;
 
 import entity.Adult;
 import entity.Child;
+import entity.Connection;
 import entity.MiniNetManager;
 import entity.Profile;
+import exception.NoAvailableException;
+import exception.NoParentException;
+import exception.NoSuchAgeException;
+import exception.NotToBeClassmatesException;
+import exception.NotToBeColleaguesException;
+import exception.NotToBeCoupledException;
+import exception.NotToBeFriendsException;
+import exception.TooYoungException;
+import utlility.FileUtility;
 
 public class GUI {
 
 	private JFrame frame;
+	ArrayList<Profile> profiles = new ArrayList<Profile>();
+	ArrayList<Connection> connections = new ArrayList<Connection>();
 	private MiniNetManager manager;
 	private JButton addPersonBtn, displaySelectedProfileBtn, deleteSelectedPersonBtn, 
 	showRelationshipBtn, addRelationshipBtn, showParentsBtn, showChildBtn;
@@ -33,10 +48,31 @@ public class GUI {
 	private JPanel networkPanel, interactPanel;
 	private static int MAX_VALUE = 1000;
 
-	public GUI(MiniNetManager manager){
-		this.manager = manager;
+	public GUI(){
+		initData();
 		initFrame();
 	}
+	
+	private void initData() {
+		try {
+			profiles = FileUtility.buildProfileListFromFile("file/people.txt");
+		} catch (IOException e) {
+			showError(e);
+		}
+		try {
+			connections = FileUtility.buildConnectionListFromFile("file/relations.txt", profiles);
+		} catch (IOException e) {
+			showError(e);
+		}
+		manager = new MiniNetManager(profiles, connections);
+		try {
+			manager.initMiniNet();
+		} catch (NoParentException e) {
+			// TODO Auto-generated catch block
+			showError(e);
+		}
+	}
+	
 	
 	private void initFrame() {
 		frame = new JFrame("MiniNet");
@@ -50,7 +86,6 @@ public class GUI {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		Container contentPane = frame.getContentPane();
-		
 		
 		JLabel lable = new JLabel("designed by Wu Zhen");
 		lable.setHorizontalAlignment(SwingConstants.RIGHT);
@@ -77,19 +112,34 @@ public class GUI {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				String name = JOptionPane.showInputDialog("Enter the name of the profile");
-				String ageString = JOptionPane.showInputDialog("Enter the age of the profile");
-				int age = Integer.parseInt(ageString);
-				String status = JOptionPane.showInputDialog("Enter the status of the profile");
-				if(age >= 16) {
-					Profile newProfile = new Adult(name, age, status);
-					manager.addProfile(newProfile);
-				}else {
-					Profile newProfile = new Child(name, age, status);
-					manager.addProfile(newProfile);
+				if(name == null) {
+					return;
 				}
-				addProfileToButtonList(name);
-				networkPanel.revalidate();
-				networkPanel.repaint();
+				String ageString = JOptionPane.showInputDialog("Enter the age of the profile");
+				if(ageString == null) {
+					return;
+				}
+				int age = Integer.parseInt(ageString);
+				try {
+					validateAge(age);
+					String status = JOptionPane.showInputDialog("Enter the status of the profile");
+					if(status == null) {
+						return;
+					}
+					if(age >= 16) {
+						Profile newProfile = new Adult(name, age, status);
+						manager.addProfile(newProfile);
+					}else {
+						Profile newProfile = new Child(name, age, status);
+						manager.addProfile(newProfile);
+					}
+					addProfileToButtonList(name);
+					networkPanel.revalidate();
+					networkPanel.repaint();
+				} catch (NoSuchAgeException e1) {
+					// TODO Auto-generated catch block
+					showError(e1);
+				}
 			}
 		});
 		interactPanel.add(addPersonBtn);
@@ -105,7 +155,7 @@ public class GUI {
 					
 				}else {
 					JOptionPane.showMessageDialog(frame,
-							"You should select only one profile to delete!",
+							"You should select only one profile to display!",
 							"Display Profile",
 						    JOptionPane.ERROR_MESSAGE);
 				}
@@ -120,14 +170,19 @@ public class GUI {
 			public void actionPerformed(ActionEvent e) {
 				// TODO need test
 				if(selectedProfile.size() == 1) {
-					removeProfileFromButtonList(selectedProfile.get(0));
-					manager.deleteProfile(manager.getProfileFromName(selectedProfile.get(0)));
-					String name = selectedProfile.get(0);
-					selectedProfile.clear();
-					networkPanel.revalidate();
-					networkPanel.repaint();
-					JOptionPane.showMessageDialog(frame,
-							"You have successfully removed " + name + "'s Profile from MiniNet!", "Delete Profile", JOptionPane.PLAIN_MESSAGE);
+					try {
+						manager.deleteProfile(manager.getProfileFromName(selectedProfile.get(0)));
+						removeProfileFromButtonList(selectedProfile.get(0));
+						String name = selectedProfile.get(0);
+						selectedProfile.clear();
+						networkPanel.revalidate();
+						networkPanel.repaint();
+						JOptionPane.showMessageDialog(frame,
+								"You have successfully removed " + name + "'s Profile from MiniNet!", "Delete Profile", JOptionPane.PLAIN_MESSAGE);
+					} catch (NoParentException e1) {
+						// TODO Auto-generated catch block
+						showError(e1);
+					}
 				}else{
 					JOptionPane.showMessageDialog(frame,
 							"You should select only one profile to delete!",
@@ -177,15 +232,41 @@ public class GUI {
 					Profile profile1 = manager.getProfileFromName(selectedProfile.get(0));
 					Profile profile2 = manager.getProfileFromName(selectedProfile.get(1));
 					String relation = JOptionPane.showInputDialog("Enter the relationship you want to add");
-					if(manager.canCreateConnection(profile1, profile2, relation)){
-						JOptionPane.showMessageDialog(frame,
-								"new connection "+ relation + " between " + profile1.getName() + 
-								" and " + profile2.getName() + " is created!", "Add Relation", JOptionPane.PLAIN_MESSAGE);
-					}else{
-						JOptionPane.showMessageDialog(frame,
-								"new connection cannot be created",
-							    "Add Relation",
-							    JOptionPane.ERROR_MESSAGE);
+					if(relation == null) {
+						return;
+					}
+					try {
+						if(manager.canCreateConnection(profile1, profile2, relation)){
+							JOptionPane.showMessageDialog(frame,
+									"new connection "+ relation + " between " + profile1.getName() + 
+									" and " + profile2.getName() + " is created!", "Add Relation", JOptionPane.PLAIN_MESSAGE);
+						}else{
+							JOptionPane.showMessageDialog(frame,
+									"new connection cannot be created",
+									"Add Relation",
+									JOptionPane.ERROR_MESSAGE);
+						}
+					}catch (TooYoungException e1) {
+						// TODO Auto-generated catch block
+						showError(e1);
+					} catch (NotToBeFriendsException e1) {
+						// TODO Auto-generated catch block
+						showError(e1);
+					} catch (NotToBeCoupledException e1) {
+						// TODO Auto-generated catch block
+						showError(e1);
+					} catch (NotToBeColleaguesException e1) {
+						// TODO Auto-generated catch block
+						showError(e1);
+					} catch (NotToBeClassmatesException e1) {
+						// TODO Auto-generated catch block
+						showError(e1);
+					} catch (NoAvailableException e1) {
+						// TODO Auto-generated catch block
+						showError(e1);
+					} catch (NoParentException e1) {
+						// TODO Auto-generated catch block
+						showError(e1);
 					}
 					
 				}
@@ -300,6 +381,22 @@ public class GUI {
 				networkPanel.remove(profileButton.get(i));
 				profileButton.remove(profileButton.get(i));
 			}
+		}
+	}
+	
+	public void showError(Exception exceptionError) {
+	    String errorMessage = "Message: " + exceptionError.getMessage();
+	    String title = exceptionError.getClass().getName();
+	    showError(errorMessage, title);
+	}
+	
+	public void showError(String errorMessage, String title) {
+	    JOptionPane.showMessageDialog(null, errorMessage, title, JOptionPane.ERROR_MESSAGE);
+	}
+	
+	public void validateAge(int age) throws NoSuchAgeException {
+		if(age < 0 || age > 150) {
+			throw new NoSuchAgeException("Trying to enter a person whose age is negative or over 150!");
 		}
 	}
 }

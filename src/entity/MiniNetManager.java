@@ -4,6 +4,14 @@ import java.util.ArrayList;
 
 import javax.net.ssl.SSLEngine;
 
+import exception.NoAvailableException;
+import exception.NoParentException;
+import exception.NotToBeClassmatesException;
+import exception.NotToBeColleaguesException;
+import exception.NotToBeCoupledException;
+import exception.NotToBeFriendsException;
+import exception.TooYoungException;
+import sun.text.resources.cldr.om.FormatData_om;
 import utlility.IOUtility;
 /**
  * This class is to manipulate the profiles and connections
@@ -22,7 +30,12 @@ public class MiniNetManager {
 		// TODO Auto-generated constructor stub
 		this.profiles = profiles;
 		this.connections = connections;
-		updateConnection();
+	}
+	
+	public void initMiniNet() throws NoParentException {
+		buildDirectConnection();
+		validateConnection();
+		buildIndirectConnection();
 	}
 
 	public ArrayList<Profile> getProfiles() {
@@ -68,6 +81,18 @@ public class MiniNetManager {
 						((Child)connection.getTargetProfile()).addParents(connection.getSourceProfile());
 					}
 				}				
+			}
+		}
+	}
+	
+	public void validateConnection() throws NoParentException{
+		for(int i = profiles.size() - 1; i >= 0; i--){
+			if(profiles.get(i) instanceof Child && ((Child) profiles.get(i)).getParents().size() != 2) {
+				Profile profile = profiles.get(i);
+				profiles.remove(profile);
+				removeConnections(profile);
+				throw new NoParentException("Removing from MiniNet as " + profile.getName()
+						+ " has no parent or has only one parent!");
 			}
 		}
 	}
@@ -168,10 +193,13 @@ public class MiniNetManager {
 	 * should be updated.
 	 * 
 	 * @param  profile  A Profile which needs to be deleted
+	 * @throws NoParentException 
 	 */
-	public void deleteProfile(Profile profile){
+	public void deleteProfile(Profile profile) throws NoParentException{
 		for(int i = profiles.size() - 1; i >= 0; i--){
-			if(profiles.get(i).equals(profile)){
+			if(!canMakeCouple(profile)) {
+				throw new NoParentException("Trying to delete an adult who has at least one dependent!");
+			}else if(profiles.get(i).equals(profile)){
 				profiles.remove(i);
 			}
 		}
@@ -210,21 +238,60 @@ public class MiniNetManager {
 	 * @param  profile2      A Profile 
 	 * @param  relationship  An Integer which represents the new profile age
 	 * @return boolean       A boolean which represents the relationship can be created or not.
+	 * @throws TooYoungException 
+	 * @throws NotToBeFriendsException 
+	 * @throws NotToBeCoupledException 
+	 * @throws NotToBeColleaguesException 
+	 * @throws NotToBeClassmatesException 
+	 * @throws NoAvailableException 
+	 * @throws NoParentException 
 	 */
-	public boolean canCreateConnection(Profile profile1, Profile profile2, String relationship){
+	public boolean canCreateConnection(Profile profile1, Profile profile2, String relationship) throws 
+	TooYoungException, NotToBeFriendsException, NotToBeCoupledException, NotToBeColleaguesException, NotToBeClassmatesException, NoAvailableException, NoParentException{
 		//constrain
-		if(relationship.equals("friends")){
-			if(profile1.getAge() <= 16 && profile2.getAge()<= 16 
-					&& profile1.getAge() >= 2 && profile2.getAge() >= 2 
-					&& Math.abs(profile1.getAge() - profile2.getAge()) <= 3){
+		if(relationship.equals("friends")) {
+			if(profile1.getAge() < 2 || profile1.getAge() < 2) {
+				throw new TooYoungException("Trying to make friend with a young child!");
+			}else if(profile1.getAge() <= 16 && profile2.getAge()<= 16 && Math.abs(profile1.getAge() - profile2.getAge()) > 3){
+				throw new NotToBeFriendsException("Tring to connect two children with an age gap larger than 3!");
+			}else if(profile1 instanceof Child && profile2 instanceof Adult || profile2 instanceof Child && profile1 instanceof Adult) {
+				throw new NotToBeFriendsException("Trying to make an adult and a child friend!");
+			}else {
 				connections.add(new Connection(profile1, profile2, relationship));
 				updateConnection();
 				return true;
 			}
 		}else if(relationship.equals("parents")){
-			if(profile1.getAge() <= 16){
+			if(profile1 instanceof Child && (((Child) profile1).getParents().size() == 0 || ((Child) profile1).getParents().size() == 1) || 
+					profile2 instanceof Child && (((Child) profile2).getParents().size() == 0) || ((Child) profile2).getParents().size() == 1) {
+				throw new NoParentException("A child or young child has no parent or has only one parent!");
+			}/*else {
 				connections.add(new Connection(profile1, profile2, relationship));
 				updateConnection();
+				return true;
+			}*/
+		}else if(relationship.equals("couple")) {
+			if(profile1 instanceof Child || profile2 instanceof Child) {
+				throw new NotToBeCoupledException("Trying to make a couple when at least one member is not an adult!");
+			}else if(!canMakeCouple(profile1) || !canMakeCouple(profile2)) {
+				throw new NoAvailableException("Trying to make two adults a couple and at least one of them is\r\n" + 
+						"already connected with another adult as a couple");
+			}else {
+				connections.add(new Connection(profile1, profile2, relationship));
+				return true;
+			}
+		}else if(relationship.equals("colleagues")) {
+			if(profile1 instanceof Child || profile2 instanceof Child) {
+				throw new NotToBeColleaguesException("Trying to connect a child in a colleague relation!");
+			}else {
+				connections.add(new Connection(profile1, profile2, relationship));
+				return true;
+			}
+		}else if(relationship.equals("classmates")) {
+			if(profile1.getAge() < 2 || profile1.getAge() < 2) {
+				throw new NotToBeClassmatesException("Trying to make a young child in a classmate relation!");
+			}else {
+				connections.add(new Connection(profile1, profile2, relationship));
 				return true;
 			}
 		}
@@ -265,4 +332,15 @@ public class MiniNetManager {
 		return name + "has no children";
 	}
 
+	
+	public boolean canMakeCouple(Profile profile) {
+		for(Connection connection : connections) {
+			if(connection.getRelationship().equals("couple")) {
+				if(connection.containProfile(profile)) {
+					return false;
+				}
+			}
+		}
+		return true;
+	}
 }

@@ -23,7 +23,6 @@ public class DisplayFrame extends JFrame{
 		int w = (Toolkit.getDefaultToolkit().getScreenSize().width - width) / 2;
 		int h = (Toolkit.getDefaultToolkit().getScreenSize().height - height) / 2;
 		setLocation(w, h);
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setVisible(true);
 		
 		Container contentPane = getContentPane();

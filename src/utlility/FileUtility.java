@@ -19,35 +19,24 @@ public class FileUtility {
 	 * 
 	 * @param String fileName the file name
 	 * @return ArrayList<String>
+	 * @throws IOException 
 	 */
-	public static ArrayList<String> readFromFile(String fileName)
+	public static ArrayList<String> readFromFile(String fileName) throws IOException
     {
     	ArrayList<String> contentList = new ArrayList<String>();
     	BufferedReader br;
-		try 
-		{
-			br = new BufferedReader(new FileReader(fileName));
-	        String lineString;
-	        while((lineString = br.readLine()) != null) 
-	        {
-	        	if (lineString.startsWith("//") || lineString.isEmpty())
-	        	{
-	        		continue;
-	            }
-	        	contentList.add(lineString.trim());//delete the spaces
-	        }
-	        br.close();
-	        return contentList;
-		} 
-		catch (FileNotFoundException e)//if file not found
-		{
-			System.out.println("The file was not found.");
-		} 
-		catch (IOException e)
-		{
-			e.printStackTrace();
-		}
-		return null;
+    	br = new BufferedReader(new FileReader(fileName));
+    	String lineString;
+    	while((lineString = br.readLine()) != null) 
+    	{
+    		if (lineString.startsWith("//") || lineString.isEmpty())
+    		{
+    			continue;
+    		}
+    		contentList.add(lineString.trim());//delete the spaces
+    	}
+    	br.close();
+    	return contentList;
     }
 	
 	/**
@@ -55,8 +44,9 @@ public class FileUtility {
 	 * 
 	 * @param String fileName
 	 * @return ArrayList<>
+	 * @throws IOException 
 	 */
-	public static ArrayList<Profile> buildProfileListFromFile(String fileName)
+	public static ArrayList<Profile> buildProfileListFromFile(String fileName) throws IOException
 	{
 		if(readFromFile(fileName) != null)
 		{
@@ -73,8 +63,9 @@ public class FileUtility {
 	 * 
 	 * @param String fileName
 	 * @return ArrayList<>
+	 * @throws IOException 
 	 */
-	public static ArrayList<Connection> buildConnectionListFromFile(String fileName, ArrayList<Profile> profiles)
+	public static ArrayList<Connection> buildConnectionListFromFile(String fileName, ArrayList<Profile> profiles) throws IOException
 	{
 		if(readFromFile(fileName) != null)
 		{
