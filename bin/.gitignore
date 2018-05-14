@@ -1,7 +1,5 @@
-/DisplayFrame.class
-/Driver.class
-/GUI$1.class
-/GUI$2.class
+/database/
+/utlility/
 /GUI$3.class
 /GUI$4.class
 /GUI$5.class
@@ -9,10 +7,3 @@
 /GUI$7.class
 /GUI$8.class
 /GUI$9.class
-/GUI.class
-/MiniNet.class
-/data/
-/entity/
-/exception/
-/interf8ce/
-/utlility/

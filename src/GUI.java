@@ -8,6 +8,7 @@ import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -33,12 +34,13 @@ import exception.NotToBeColleaguesException;
 import exception.NotToBeCoupledException;
 import exception.NotToBeFriendsException;
 import exception.TooYoungException;
+import utlility.DatabaseUtility;
 import utlility.FileUtility;
 
 public class GUI {
 
 	private JFrame frame;
-	ArrayList<Profile> profiles = new ArrayList<Profile>();
+	ArrayList<Profile> profiles;
 	ArrayList<Connection> connections = new ArrayList<Connection>();
 	private MiniNetManager manager;
 	private JButton addPersonBtn, displaySelectedProfileBtn, deleteSelectedPersonBtn, 
@@ -47,6 +49,7 @@ public class GUI {
 	private ArrayList<String> selectedProfile;
 	private JPanel networkPanel, interactPanel;
 	private static int MAX_VALUE = 1000;
+	private boolean DBUsed = false;
 
 	public GUI(){
 		initData();
@@ -58,6 +61,21 @@ public class GUI {
 			profiles = FileUtility.buildProfileListFromFile("file/people.txt");
 		} catch (IOException e) {
 			showError(e);
+		}
+		if(profiles == null) {
+			JOptionPane.showMessageDialog(frame,
+					"Getting Profiles from Embedded Database", "Getting Profiles", JOptionPane.PLAIN_MESSAGE);
+			try {
+				DatabaseUtility.initProfileDB();
+				profiles = DatabaseUtility.getProfileFromDB();
+				DBUsed = true;
+			} catch (ClassNotFoundException e1) {
+				// TODO Auto-generated catch block
+				showError(e1);
+			} catch (SQLException e1) {
+				// TODO Auto-generated catch block
+				showError(e1);
+			}
 		}
 		try {
 			connections = FileUtility.buildConnectionListFromFile("file/relations.txt", profiles);
@@ -129,14 +147,26 @@ public class GUI {
 					if(age >= 16) {
 						Profile newProfile = new Adult(name, age, status);
 						manager.addProfile(newProfile);
+						if(DBUsed) {
+							DatabaseUtility.addProfileIntoDB(newProfile);
+						}
 					}else {
 						Profile newProfile = new Child(name, age, status);
 						manager.addProfile(newProfile);
+						if(DBUsed) {
+							DatabaseUtility.addProfileIntoDB(newProfile);
+						}
 					}
 					addProfileToButtonList(name);
 					networkPanel.revalidate();
 					networkPanel.repaint();
 				} catch (NoSuchAgeException e1) {
+					// TODO Auto-generated catch block
+					showError(e1);
+				} catch (ClassNotFoundException e1) {
+					// TODO Auto-generated catch block
+					showError(e1);
+				} catch (SQLException e1) {
 					// TODO Auto-generated catch block
 					showError(e1);
 				}
@@ -174,12 +204,21 @@ public class GUI {
 						manager.deleteProfile(manager.getProfileFromName(selectedProfile.get(0)));
 						removeProfileFromButtonList(selectedProfile.get(0));
 						String name = selectedProfile.get(0);
+						if(DBUsed) {
+							DatabaseUtility.deleteProfileFromDB(manager.getProfileFromName(selectedProfile.get(0)));
+						}
 						selectedProfile.clear();
 						networkPanel.revalidate();
 						networkPanel.repaint();
 						JOptionPane.showMessageDialog(frame,
 								"You have successfully removed " + name + "'s Profile from MiniNet!", "Delete Profile", JOptionPane.PLAIN_MESSAGE);
 					} catch (NoParentException e1) {
+						// TODO Auto-generated catch block
+						showError(e1);
+					} catch (ClassNotFoundException e1) {
+						// TODO Auto-generated catch block
+						showError(e1);
+					} catch (SQLException e1) {
 						// TODO Auto-generated catch block
 						showError(e1);
 					}
