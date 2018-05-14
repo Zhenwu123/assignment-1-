@@ -1,34 +1,34 @@
 package entity;
 
-import java.awt.Image;
 import java.util.ArrayList;
+
 /**
- * This class is a base-class Profile which defines profile 
- * name, age, image and status, and each profile has a ArrayList
- * of Profile as friends.
+ * This class is a base-class Profile which defines profile name, age, image and
+ * status, and each profile has a ArrayList of Profile as friends.
  * 
- * @author Zhen Wu 
+ * @author Zhen Wu
  * @version 1.0
  */
 
-public abstract class Profile{
+public abstract class Profile {
 
 	private String name;
 	private int age;
-	private Image image;
+	private String image;
 	private String status;
-	
+
 	private ArrayList<Profile> friends;
-	
-	public Profile(String name, int age, String status) {
+
+	public Profile(String name, int age, String status, String image) {
 		// TODO Auto-generated constructor stub
 		setName(name);
 		setAge(age);
 		setStatus(status);
-		
+		setImage(image);
+
 		friends = new ArrayList<Profile>();
 	}
-	
+
 	public String getName() {
 		return name;
 	}
@@ -45,11 +45,11 @@ public abstract class Profile{
 		this.age = age;
 	}
 
-	public Image getImage() {
+	public String getImage() {
 		return image;
 	}
 
-	public void setImage(Image image) {
+	public void setImage(String image) {
 		this.image = image;
 	}
 
@@ -69,43 +69,45 @@ public abstract class Profile{
 		this.friends = friends;
 	}
 
-    /** addFriends(Profile profile) is to add a single Profile
-     *  to his friends' ArrayList.
-     * 
-     * @param profile A Profile to be added to the friends ArrayList
-     */
-	public void addFriends(Profile profile){
-		if(!friends.contains(profile)){
+	/**
+	 * addFriends(Profile profile) is to add a single Profile to his friends'
+	 * ArrayList.
+	 * 
+	 * @param profile
+	 *            A Profile to be added to the friends ArrayList
+	 */
+	public void addFriends(Profile profile) {
+		if (!friends.contains(profile)) {
 			friends.add(profile);
 		}
 	}
-	
-    /** combineFriends(ArrayList<Profile> friendsArrayList) is 
-     * to add a List of Profile to the friends ArrayList
-     *
-     * @param friendsArrayList A List of Profile to be added to friends ArrayList
-     */
-	public void combineFriends(ArrayList<Profile> friendsArrayList){
-		for(Profile profile : friendsArrayList){
-			if(!friends.contains(profile) && !profile.getName().equals(this.name)){
+
+	/**
+	 * combineFriends(ArrayList<Profile> friendsArrayList) is to add a List of
+	 * Profile to the friends ArrayList
+	 *
+	 * @param friendsArrayList
+	 *            A List of Profile to be added to friends ArrayList
+	 */
+	public void combineFriends(ArrayList<Profile> friendsArrayList) {
+		for (Profile profile : friendsArrayList) {
+			if (!friends.contains(profile) && !profile.getName().equals(this.name)) {
 				friends.add(profile);
 			}
 		}
 	}
-	
-	/** toString() build an String of all the information
-	 *  of a Profile.
-     * 
-     * @return  String  An object which holds the all the 
-     * information of a Profile.
-     */
-	public String toString(){
+
+	/**
+	 * toString() build an String of all the information of a Profile.
+	 * 
+	 * @return String An object which holds the all the information of a Profile.
+	 */
+	public String toString() {
 		String friendsString = "";
-		for(Profile profile : friends){
+		for (Profile profile : friends) {
 			friendsString += profile.getName() + " ";
 		}
-		return "Profile name: " + getName() + "\n" 
-					+ "Age: " + getAge() + "\n" + "Status: "
-					+ getStatus() + "\n" + "Friends: " + friendsString + "\n";
+		return "Profile name: " + getName() + "\n" + "Age: " + getAge() + "\n" + "Status: " + getStatus() + "\n"
+				+ "Friends: " + friendsString + "\n";
 	}
 }

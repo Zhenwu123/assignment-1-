@@ -20,23 +20,23 @@ public class MiniNetData {
 	
 	public static ArrayList<Profile> createProfile(){
 		ArrayList<Profile> profiles = new ArrayList<Profile>();
-		lucas = new Child("Lucas", 12, "High School Student");
+		lucas = new Child("Lucas", 12, "High School Student", "");
 		profiles.add(lucas);
-		ivy = new Child("Ivy", 14, "High School Student");
+		ivy = new Child("Ivy", 14, "High School Student", "");
 		profiles.add(ivy);
-		emily = new Adult("Emily", 22, "Working in KFC");
+		emily = new Adult("Emily", 22, "Working in KFC", "");
 		profiles.add(emily);
-		alice = new Adult("Alice", 14, "Student at RMIT");
+		alice = new Adult("Alice", 14, "Student at RMIT", "");
 		profiles.add(alice);
-		bob = new Adult("Bob", 14, "Student at RMIT");
+		bob = new Adult("Bob", 14, "Student at RMIT", "");
 		profiles.add(bob);
-		cathy = new Adult("Cathy", 13, "Student at RMIT");
+		cathy = new Adult("Cathy", 13, "Student at RMIT", "");
 		profiles.add(cathy);
-		don = new Adult("Don", 13, "Student at RMIT");
+		don = new Adult("Don", 13, "Student at RMIT", "");
 		profiles.add(don);
-		jack = new Adult("Jack", 45, "Working in ChinaTown");
+		jack = new Adult("Jack", 45, "Working in ChinaTown", "");
 		profiles.add(jack);
-		mia = new Adult("Mia", 42, "Working as Accountant");
+		mia = new Adult("Mia", 42, "Working as Accountant", "");
 		profiles.add(mia);
 		return profiles;
 	}

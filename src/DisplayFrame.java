@@ -1,4 +1,3 @@
-import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.Image;
 import java.awt.Toolkit;
@@ -29,7 +28,8 @@ public class DisplayFrame extends JFrame{
 		contentPane.setLayout(null);
 		
 		
-		Image image = new ImageIcon("images/image.jpg").getImage();
+		Image image = new ImageIcon(profile.getImage()).getImage();
+		System.out.println(profile.getImage());
 		ImageIcon icon = new ImageIcon(image);
 		JLabel imageLabel = new JLabel();
 		imageLabel.setIcon(icon);

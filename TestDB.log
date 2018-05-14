@@ -1,19 +1,2 @@
-/*C1*/SET SCHEMA SYSTEM_LOBS
-INSERT INTO BLOCKS VALUES(0,2147483647,0)
-COMMIT
-/*C2*/SET SCHEMA PUBLIC
-drop table profiles if exists
-create table profiles(name varchar(20) not null, image varchar(20), status varchar(20), age integer)
-INSERT INTO PROFILES VALUES('Alex Smith','','student at RMIT',21)
-COMMIT
-INSERT INTO PROFILES VALUES('Ben Turner','BenPhoto.jpg','\u201cmanager at Coles',35)
-COMMIT
-INSERT INTO PROFILES VALUES('Hannah White','Hannah.png','student at PLC',14)
-COMMIT
-INSERT INTO PROFILES VALUES('Zoe Foster','','Founder of ZFX',28)
-COMMIT
-INSERT INTO PROFILES VALUES('Mark Turner','Mark.jpeg','',2)
-COMMIT
-DISCONNECT
-/*C3*/SET SCHEMA PUBLIC
+/*C5*/SET SCHEMA PUBLIC
 DISCONNECT

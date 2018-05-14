@@ -130,9 +130,9 @@ public class MiniNetManager {
 	 */
 	public Profile createProfile(String name, int age, String status){
 		if(age >= 16){
-			return new Adult(name, age, status);
+			return new Adult(name, age, status, "");
 		}else{
-			return new Child(name, age, status);
+			return new Child(name, age, status, "");
 		}
 	}
 	

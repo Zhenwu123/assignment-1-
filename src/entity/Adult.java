@@ -9,8 +9,8 @@ package entity;
 
 public class Adult extends Profile{
 	
-	public Adult(String name, int age, String status) {
-		super(name, age, status);
+	public Adult(String name, int age, String status, String image) {
+		super(name, age, status, image);
 		// TODO Auto-generated constructor stub
 	}
 

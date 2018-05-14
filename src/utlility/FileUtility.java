@@ -90,16 +90,16 @@ public class FileUtility {
 		for (String content : contentList)
 		{
 			String name = content.split(",")[0].trim();
-			String img = content.split(",")[1].trim();
+			String image = content.split(",")[1].trim();
 			String status = content.split(",")[2].trim();
 			String gender = content.split(",")[3].trim();
 			int age = Integer.parseInt(content.split(",")[4].trim());
 			String state = content.split(",")[5].trim();
 			if(age < 16) {
-				Profile newprofile = new Child(name, age, status);
+				Profile newprofile = new Child(name, age, status, image);
 				profileList.add(newprofile);
 			}else {
-				Profile newprofile = new Adult(name, age, status);
+				Profile newprofile = new Adult(name, age, status, image);
 				profileList.add(newprofile);
 			}
 		}

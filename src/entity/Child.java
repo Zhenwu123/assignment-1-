@@ -20,8 +20,8 @@ public class Child extends Profile implements AddRelationship{
      */
 	private ArrayList<Profile> parents;
 
-	public Child(String name, int age, String status) {
-		super(name, age, status);		
+	public Child(String name, int age, String status, String image) {
+		super(name, age, status, image);		
 		// TODO Auto-generated constructor stub
 
 		parents = new ArrayList<Profile>(2);

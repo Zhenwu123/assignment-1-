@@ -3,14 +3,12 @@ import java.awt.ComponentOrientation;
 import java.awt.Container;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
-import java.awt.HeadlessException;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -66,7 +64,9 @@ public class GUI {
 			JOptionPane.showMessageDialog(frame,
 					"Getting Profiles from Embedded Database", "Getting Profiles", JOptionPane.PLAIN_MESSAGE);
 			try {
-				DatabaseUtility.initProfileDB();
+				if(!DatabaseUtility.checkDBexisted()) {
+					DatabaseUtility.initProfileDB();
+				}
 				profiles = DatabaseUtility.getProfileFromDB();
 				DBUsed = true;
 			} catch (ClassNotFoundException e1) {
@@ -145,13 +145,13 @@ public class GUI {
 						return;
 					}
 					if(age >= 16) {
-						Profile newProfile = new Adult(name, age, status);
+						Profile newProfile = new Adult(name, age, status, "");
 						manager.addProfile(newProfile);
 						if(DBUsed) {
 							DatabaseUtility.addProfileIntoDB(newProfile);
 						}
 					}else {
-						Profile newProfile = new Child(name, age, status);
+						Profile newProfile = new Child(name, age, status, "");
 						manager.addProfile(newProfile);
 						if(DBUsed) {
 							DatabaseUtility.addProfileIntoDB(newProfile);

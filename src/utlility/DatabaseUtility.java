@@ -1,10 +1,13 @@
 package utlility;
 
 import java.sql.Connection;
+import java.sql.DatabaseMetaData;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+
+import com.sun.crypto.provider.RSACipher;
 
 import entity.Adult;
 import entity.Child;
@@ -24,16 +27,28 @@ public class DatabaseUtility {
 	
 	public static void initProfileDB() throws ClassNotFoundException, SQLException {
 		Connection connection = getConnection();
-		connection.prepareStatement("drop table profiles if exists;").execute();
+		
+		//connection.prepareStatement("drop table profiles if exists;").execute();
 		connection.prepareStatement("create table profiles(name varchar(20) not null, image varchar(20), "
 				+ "status varchar(20), age integer);").execute();
 		connection.prepareStatement("insert into profiles(name, image, status, age) values ('Alex Smith', '', 'student at RMIT', 21);").execute();
-		connection.prepareStatement("insert into profiles(name, image, status, age) values ('Ben Turner', 'BenPhoto.jpg', '¡°manager at Coles', 35);").execute();
-		connection.prepareStatement("insert into profiles(name, image, status, age) values ('Hannah White', 'Hannah.png', 'student at PLC', 14);").execute();
+		connection.prepareStatement("insert into profiles(name, image, status, age) values ('Ben Turner', 'images/BenPhoto.png', '¡°manager at Coles', 35);").execute();
+		connection.prepareStatement("insert into profiles(name, image, status, age) values ('Hannah White', 'images/Hannah.png', 'student at PLC', 14);").execute();
 		connection.prepareStatement("insert into profiles(name, image, status, age) values ('Zoe Foster', '', 'Founder of ZFX', 28);").execute();
-		connection.prepareStatement("insert into profiles(name, image, status, age) values ('Mark Turner', 'Mark.jpeg', '', 2);").execute();
+		connection.prepareStatement("insert into profiles(name, image, status, age) values ('Mark Turner', 'images/Mark.png', '', 2);").execute();
 		connection.commit();
 		connection.close();
+	}
+	
+	public static boolean checkDBexisted() throws SQLException, ClassNotFoundException {
+		Connection connection = getConnection();
+		DatabaseMetaData md = connection.getMetaData();
+		ResultSet rs = md.getTables(null, null, "PROFILES", null);
+		rs.next();
+		if(rs.getString(3) != null) {
+			return true;
+		}
+		return false;
 	}
 	
 	public static ArrayList<Profile> getProfileFromDB() throws ClassNotFoundException, SQLException {
@@ -42,9 +57,9 @@ public class DatabaseUtility {
 		ResultSet rs = connection.prepareStatement("select name, image, status, age from profiles;").executeQuery();
 		while(rs.next()) {
 			if(rs.getInt(4) <= 16) {
-				profiles.add(new Child(rs.getString(1), Integer.valueOf(rs.getString(4)), rs.getString(3)));
+				profiles.add(new Child(rs.getString(1), Integer.valueOf(rs.getString(4)), rs.getString(3), rs.getString(2)));
 			}else {
-				profiles.add(new Adult(rs.getString(1), Integer.valueOf(rs.getString(4)), rs.getString(3)));
+				profiles.add(new Adult(rs.getString(1), Integer.valueOf(rs.getString(4)), rs.getString(3), rs.getString(2)));
 			}
 		}
 		connection.close();
