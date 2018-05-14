@@ -10,7 +10,7 @@ import java.util.ArrayList;
  * to its parents Profile ArrayList. 
  * 
  * @author  Zhen Wu
- * @version 1.0
+ * @version 1.1
  */
 
 public class Child extends Profile implements AddRelationship{

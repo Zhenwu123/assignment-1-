@@ -35,6 +35,14 @@ import exception.TooYoungException;
 import utlility.DatabaseUtility;
 import utlility.FileUtility;
 
+/**
+ * This class is a Main Frame class which display the people in MiniNet and it allows
+ *  user to interact through the button on the right side. 
+ * 
+ * @author  Zhen Wu
+ * @version 1.1
+ */
+
 public class GUI {
 
 	private JFrame frame;
@@ -54,6 +62,13 @@ public class GUI {
 		initFrame();
 	}
 	
+    /** initData() reads profiledata from txt file if the file exist, otherwise it will
+     * read people data from the database.
+     * 
+     * @throws NoSuchAgeException 
+     * @throws ClassNotFoundException 
+     * @throws SQLException 
+     */
 	private void initData() {
 		try {
 			profiles = FileUtility.buildProfileListFromFile("file/people.txt");
@@ -91,7 +106,21 @@ public class GUI {
 		}
 	}
 	
-	
+    /** initFrame() creates the frame and initialize the components. It can
+     * also interact with user through the buttons to add profile, display 
+     * profile, create connection, show connection and delete profile.
+     * 
+     * @throws ClassNotFoundException 
+     * @throws SQLException 
+     * @throws NoSuchAgeException 
+     * @throws NoParentException 
+     * @throws TooYoungException 
+     * @throws NotToBeFriendsException 
+     * @throws NotToBeCoupledException 
+     * @throws NotToBeColleaguesException 
+     * @throws NotToBeClassmatesException 
+     * @throws NoAvailableException 
+     */
 	private void initFrame() {
 		frame = new JFrame("MiniNet");
 		

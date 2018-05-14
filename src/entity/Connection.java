@@ -6,7 +6,7 @@ package entity;
  * between these profiles.
  * 
  * @author  
- * @version 1.0
+ * @version 1.1
  */
 
 public class Connection {

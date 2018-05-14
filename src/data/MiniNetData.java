@@ -10,8 +10,11 @@ import entity.Profile;
  * This class is a class which creates sample data for MiniNet including 
  * list of profiles and list of connections. 
  * 
+ * This class will not be used in the version 1.1 as the new version reads
+ * people and relation data from txt file or from the hsql database. 
+ * 
  * @author  Zhen Wu
- * @version 1.0
+ * @version 1.1
  */
 
 public class MiniNetData {

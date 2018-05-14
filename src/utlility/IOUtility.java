@@ -11,8 +11,10 @@ import entity.Profile;
  * This class is a utility class which defines methods to read different forms of user input, 
  * read data from outside class.
  * 
+ * This class will not be used in the new version as the interaction is through GUI.
+ * 
  * @author  Zhen Wu
- * @version 1.0
+ * @version 1.1
  */
 
 public class IOUtility

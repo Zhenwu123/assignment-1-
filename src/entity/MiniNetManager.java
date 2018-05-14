@@ -18,7 +18,7 @@ import utlility.IOUtility;
  * according to the user request.
  * 
  * @author  
- * @version 1.0
+ * @version 1.1
  */
 
 public class MiniNetManager {

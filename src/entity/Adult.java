@@ -4,7 +4,7 @@ package entity;
  * which is used to store Adult profile information.
  * 
  * @author  Zhen Wu
- * @version 1.0
+ * @version 1.1
  */
 
 public class Adult extends Profile{

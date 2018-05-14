@@ -8,12 +8,19 @@ import javax.swing.JLabel;
 
 import entity.Profile;
 
+/**
+ * This class is a Frame class which display the detailed information of 
+ * selected people in the main frame.
+ * 
+ * @author  Zhen Wu
+ * @version 1.1
+ */
+
 @SuppressWarnings("serial")
 public class DisplayFrame extends JFrame{
 	
 	public DisplayFrame(Profile profile) {
 		// TODO Auto-generated constructor stub
-		
 		setTitle("MiniNet - Display Profile");
 		
 		int width = 600;
@@ -26,7 +33,6 @@ public class DisplayFrame extends JFrame{
 		
 		Container contentPane = getContentPane();
 		contentPane.setLayout(null);
-		
 		
 		Image image = new ImageIcon(profile.getImage()).getImage();
 		System.out.println(profile.getImage());

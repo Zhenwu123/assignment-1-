@@ -7,7 +7,7 @@ import java.util.ArrayList;
  * status, and each profile has a ArrayList of Profile as friends.
  * 
  * @author Zhen Wu
- * @version 1.0
+ * @version 1.1
  */
 
 public abstract class Profile {

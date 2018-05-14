@@ -11,9 +11,15 @@ import entity.Child;
 import entity.Connection;
 import entity.Profile;
 
+
+/**
+ * This class is a File Utility class which defines methods to read data from txt file.
+ * 
+ * @author  Zhen Wu
+ * @version 1.1
+ */
+
 public class FileUtility {
-
-
 	/**
 	 * Reads data from file returning the lines as a list, or null if error
 	 * 
@@ -40,10 +46,10 @@ public class FileUtility {
     }
 	
 	/**
-	 * A method to build ArrayList of 
+	 * A method to build ArrayList of Profile
 	 * 
 	 * @param String fileName
-	 * @return ArrayList<>
+	 * @return ArrayList<Profile>
 	 * @throws IOException 
 	 */
 	public static ArrayList<Profile> buildProfileListFromFile(String fileName) throws IOException
@@ -59,10 +65,10 @@ public class FileUtility {
 	}
 	
 	/**
-	 * A method to build ArrayList of 
+	 * A method to build ArrayList of Connection
 	 * 
 	 * @param String fileName
-	 * @return ArrayList<>
+	 * @return ArrayList<Connection>
 	 * @throws IOException 
 	 */
 	public static ArrayList<Connection> buildConnectionListFromFile(String fileName, ArrayList<Profile> profiles) throws IOException
@@ -79,10 +85,10 @@ public class FileUtility {
 	
 	
 	/**
-	 * A method to build the  list from String list which is read from file
+	 * A method to build the Profile list from String list which is read from file
 	 * 
 	 * @param ArrayList<String> contentList
-	 * @return ArrayList<>
+	 * @return ArrayList<Profile>
 	 */
 	public static ArrayList<Profile> buildProfileListFromStringList(ArrayList<String> contentList) 
 	{
@@ -107,7 +113,7 @@ public class FileUtility {
 	}
 
 	/**
-	 * A method to build the  list from String list which is read from file
+	 * A method to build the Connection list from String list which is read from file
 	 * 
 	 * @param ArrayList<String> contentList
 	 * @return ArrayList<>

@@ -1,17 +1,25 @@
 package utlility;
 
 import java.sql.Connection;
+
 import java.sql.DatabaseMetaData;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-import com.sun.crypto.provider.RSACipher;
-
 import entity.Adult;
 import entity.Child;
 import entity.Profile;
+
+/**
+ * This class is a Database Utility class which defines methods to initiate data in 
+ * the database, check whether the database exist, read data from database, save and
+ *  delete new object to/from database.
+ * 
+ * @author  Zhen Wu
+ * @version 1.1
+ */
 
 public class DatabaseUtility {
 
